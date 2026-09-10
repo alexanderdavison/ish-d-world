@@ -100,6 +100,7 @@ button, input { font: inherit; }
   font-size: clamp(4rem, 12vw, 9rem);
   line-height: 1;
   letter-spacing: -.1em;
+  word-spacing: -.2em;
   white-space: nowrap;
 }
 .boot-small { color: var(--signal); }
@@ -201,7 +202,7 @@ button, input { font: inherit; }
 }
 
 .wordmark-kicker { display: block; margin-bottom: 6px; color: var(--signal); font-size: 10px; letter-spacing: .16em; }
-.wordmark-object h1 { margin: 0; font-family: "Silkscreen", monospace; font-size: clamp(4rem, 7vw, 7.3rem); line-height: .82; letter-spacing: -.07em; white-space: nowrap; }
+.wordmark-object h1 { margin: 0; font-family: "Silkscreen", monospace; font-size: clamp(4rem, 7vw, 7.3rem); line-height: .82; letter-spacing: -.07em; word-spacing: -.2em; white-space: nowrap; }
 .wordmark-object p { margin: 16px 0 0; font-size: 11px; letter-spacing: .22em; opacity: .76; }
 
 .signal-tower {
@@ -990,7 +991,10 @@ button, input { font: inherit; }
   .interior-footer p { margin-top: 24px; font-size: 7px; }
   .release-item { grid-template-columns: 26px 1fr; }
   .release-item > a { grid-column: 2; justify-self: start; }
-  .contact-list li { grid-template-columns: 75px 1fr; }
+  /* Label column must fit the longest label ("COLLABORATION" ≈ 91px at 10px).
+     At 75px it spilled ~16px into the value column and collided with "EMAIL". */
+  .contact-list li { grid-template-columns: 96px 1fr; }
+  .contact-list span { overflow-wrap: anywhere; }
   .form-row, .player-controls { grid-template-columns: 1fr; }
   .player-controls [data-slot="button"] { width: 100%; }
   .demo-grid { grid-template-columns: 1fr; }
@@ -1007,4 +1011,18 @@ button, input { font: inherit; }
   *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
   .boot-screen { display: none; }
   .world-stage, .map-layer-back { transform: none; }
+}
+
+/* Mobile: interior page titles must fit the phone.
+   The desktop rule clamps at a 3.3rem MINIMUM, so on a 390px screen the
+   Silkscreen title renders ~50px and overflows its column ("Transmissions"
+   needs 423px inside 350px). That overflow drags the whole layout wider than
+   the device, so the page renders cut off / cramped on a phone.
+   Scale with the viewport instead, and never let a long word widen the page. */
+@media (max-width: 900px) {
+  .station-heading h1,
+  .interior-info .station-heading h1 {
+    font-size: clamp(1.4rem, 9.2vw, 3.3rem);
+    overflow-wrap: anywhere;
+  }
 }
