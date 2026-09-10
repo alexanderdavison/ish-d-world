@@ -1,0 +1,125 @@
+<!doctype html>
+<!--
+  ISH D — TRANSMISSION LIST email template (site-language background system)
+  ---------------------------------------------------------------------------
+  Built by Pyra (ish-d / Release Command Center), 2026-09-09.
+  Visual language lifted from the live site (ishdonline.com / ish-d-world
+  app/globals.css): void #080907 · paper #f1f0e8 · signal #f36b21 ·
+  indigo #5955a6 · 32px pixel grid · 4px scanline overlay · Silkscreen +
+  IBM Plex Mono · rotated-square station markers · dancefloor grid.
+
+  HOW TO APPLY (Listmonk, LXC 211 -> Templates):
+    1. GET the existing template body first (id 3 "Sample transactional
+       template" = welcome mail, id 4 "Sample visual template" =
+       campaign_visual) and KEEP any placeholder it uses that is not in
+       this file ({{ template "content" . }} is included below; if the live
+       body uses {{ template "unsubscribe" . }} or a TrackView snippet,
+       keep that snippet in the unsubscribe row).
+    2. Replace the outer HTML with this file.
+    3. Update the three image URLs if the public path changes.
+
+  IMAGE FALLBACK LAW: every image sits on a table cell that also carries a
+  bgcolor, so a client that blocks images (Gmail default for new senders,
+  Outlook) still renders a solid void-black, legible email.
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="dark">
+  <meta name="supported-color-schemes" content="dark">
+  <title>ISH D — Transmission List</title>
+  <style>
+    html,body{margin:0;padding:0;background-color:#080907}
+    body{-webkit-text-size-adjust:100%}
+    table{border-collapse:collapse}
+    img{border:0;display:block;outline:none;text-decoration:none}
+    a{color:#f36b21}
+    .well{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+          font-size:16px;line-height:1.7;color:#f1f0e8}
+    .well h1,.well h2{font-family:"Silkscreen","IBM Plex Mono",ui-monospace,monospace;
+          text-transform:uppercase;letter-spacing:.05em;color:#f1f0e8;margin:0 0 16px}
+    .well h1{font-size:25px;line-height:1.25}
+    .well h2{font-size:18px;line-height:1.3}
+    .well p{margin:0 0 16px}
+    .well .rule{height:3px;width:64px;background:#f36b21;margin:0 0 20px}
+    .well .small{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#f1f0e8;opacity:.62}
+    .unsub{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+           font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+           color:#f1f0e8;opacity:.62;padding:22px 40px 30px}
+    .unsub a{color:#f36b21;text-decoration:none}
+    @media (max-width:600px){
+      .card,.shrink{width:100%!important;max-width:100%!important;height:auto!important}
+      .well{padding:26px 22px!important;font-size:16px!important}
+      .unsub{padding:20px 22px 26px!important}
+    }
+  </style>
+</head>
+<body style="margin:0;padding:0;background-color:#080907;">
+
+  <!-- preheader: shows in the inbox preview line, never in the body -->
+  <div style="display:none;max-height:0;overflow:hidden;opacity:0;color:#080907;">
+    ISH D — Composition Room, Los Angeles. Transmissions from the room.
+  </div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+         bgcolor="#080907"
+         style="width:100%;background-color:#080907;
+                background-image:url('https://ishdonline.com/email-assets/ishd-email-tile-64x64.png');
+                background-repeat:repeat;">
+    <tr>
+      <td align="center" style="padding:0;">
+
+        <table role="presentation" class="card" width="600" cellpadding="0" cellspacing="0" border="0"
+               style="width:600px;background-color:#080907;">
+
+          <!-- header band: pixel wordmark, signal rules, station markers -->
+          <tr>
+            <td bgcolor="#080907" style="background-color:#080907;line-height:0;">
+              <img src="https://ishdonline.com/email-assets/ishd-email-header-1200x560.png"
+                   class="shrink" width="600" height="280"
+                   alt="ISH D — House · Disco · Garage — Transmission List"
+                   style="display:block;width:600px;max-width:600px;height:auto;border:0;">
+            </td>
+          </tr>
+
+          <!-- content well: flat void behind the injected content, so body
+               text never sits on texture -->
+          <tr>
+            <td bgcolor="#080907" style="background-color:#080907;">
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+                <tr>
+                  <td class="well" style="padding:38px 40px 30px;">
+                    {{ template "content" . }}
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- footer band: dancefloor grid + room meta -->
+          <tr>
+            <td bgcolor="#080907" style="background-color:#080907;line-height:0;">
+              <img src="https://ishdonline.com/email-assets/ishd-email-footer-1200x400.png"
+                   class="shrink" width="600" height="200"
+                   alt="ISH D — Dance floor / live — © 2026 ISH D"
+                   style="display:block;width:600px;max-width:600px;height:auto;border:0;">
+            </td>
+          </tr>
+
+          <!-- unsubscribe: keep the live template's own snippet if it differs -->
+          <tr>
+            <td class="unsub" style="background-color:#080907;">
+              <a href="{{ UnsubscribeURL }}">Unsubscribe</a> &nbsp;·&nbsp; ishdonline.com
+            </td>
+          </tr>
+
+        </table>
+
+      </td>
+    </tr>
+  </table>
+
+</body>
+</html>

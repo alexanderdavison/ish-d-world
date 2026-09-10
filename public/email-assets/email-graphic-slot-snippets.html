@@ -1,0 +1,158 @@
+<!--
+  ============================================================================
+  ISH D — TRANSMISSION LIST EMAIL · GRAPHIC SLOT SNIPPETS
+  ============================================================================
+  Pyra (ish-d / RCC), 2026-09-09. Built for Listmonk template id 5
+  "Transmission List — welcome + access key (DRAFT copy)" (transactional),
+  and reusable for id 4 (campaign_visual).
+
+  WHERE THESE GO
+    * The transactional welcome/key mail is template id 5. Its body already
+      holds the DRAFT copy and renders the access key with {{ .Tx.Data.key }}
+      (tx templates expose custom data under .Tx.Data — a wrong path fails the
+      send outright, so do not touch that expression).
+    * There is a marked [GRAPHIC SLOT] comment in that body: the HEADER BAND
+      block below goes there, the FOOTER BAND block goes last, and the GROUND
+      WRAPPER wraps the whole existing body.
+    * Copy is a functional draft — Riley (ish-d) owns the voice pass; do not
+      rewrite the copy while applying the graphic.
+
+  ASSETS (live, public, byte-verified 2026-09-09)
+    header band 600x280 @2x  https://ishdonline.com/email-assets/ishd-email-header-1200x560.png
+    ground tile 32px grid    https://ishdonline.com/email-assets/ishd-email-tile-64x64.png
+    footer band 600x200 @2x  https://ishdonline.com/email-assets/ishd-email-footer-1200x400.png
+
+  IMAGE FALLBACK LAW — Gmail blocks images for senders without reputation and
+  some clients never load the tile. Every image band therefore sits on a cell
+  that also carries bgcolor="#080907", and the wrapper carries the same
+  bgcolor, so image-blocking clients still get a solid void-black, legible
+  email (verified in preview-images-blocked-600.png).
+
+  PALETTE / MOTIF PROVENANCE (live site, ish-d-world app/globals.css)
+    void #080907 · paper #f1f0e8 · signal #f36b21 · indigo #5955a6 ·
+    ink #171815 · line rgba(241,240,232,.22)
+    32px pixel grid · 4px scanline overlay (3px transparent + 1px paper @.035)
+    Silkscreen (pixel display) + IBM Plex Mono · rotated-square station
+    markers with orange STN.nn codes · perspective dancefloor grid
+    (orange top rule, trapezoid clip) · pixel dancer sprites with the site's
+    drop-shadow(5px 5px 0 rgba(89,85,166,.26))
+-->
+
+
+<!-- ==========================================================================
+     BLOCK 1 — <head> ADDITIONS (merge into the template's <head>)
+     ========================================================================== -->
+<meta name="color-scheme" content="dark">
+<meta name="supported-color-schemes" content="dark">
+<meta name="x-apple-disable-message-reformatting">
+<style>
+  html,body{margin:0;padding:0;background-color:#080907}
+  table{border-collapse:collapse}
+  img{border:0;display:block;outline:none;text-decoration:none}
+  a{color:#f36b21}
+  .ishd-well{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+             font-size:16px;line-height:1.7;color:#f1f0e8}
+  .ishd-well h1,.ishd-well h2{font-family:"Silkscreen","IBM Plex Mono",ui-monospace,monospace;
+             text-transform:uppercase;letter-spacing:.05em;color:#f1f0e8;margin:0 0 16px}
+  .ishd-well h1{font-size:25px;line-height:1.25}
+  .ishd-well h2{font-size:18px;line-height:1.3}
+  .ishd-well p{margin:0 0 16px}
+  .ishd-well .rule{height:3px;width:64px;background:#f36b21;margin:0 0 20px}
+  .ishd-well .small{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#f1f0e8;opacity:.62}
+  .ishd-key{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:20px;
+            letter-spacing:.18em;color:#080907;background:#f36b21;padding:14px 18px;
+            display:inline-block;text-transform:uppercase}
+  .ishd-unsub{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-size:11px;
+              letter-spacing:.1em;text-transform:uppercase;color:#f1f0e8;opacity:.62;padding:20px 40px 28px}
+  .ishd-unsub a{color:#f36b21;text-decoration:none}
+  @media (max-width:600px){
+    .ishd-shrink,.ishd-card{width:100%!important;max-width:100%!important;height:auto!important}
+    .ishd-well{padding:26px 22px!important;font-size:16px!important}
+    .ishd-unsub{padding:18px 22px 24px!important}
+  }
+</style>
+
+
+<!-- ==========================================================================
+     BLOCK 2 — GROUND WRAPPER (open) — wrap the ENTIRE existing body content
+     in these two tables. This is the "background of the email": the 32px
+     site grid + scanline tile shows around and behind the content column.
+     ========================================================================== -->
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"
+       bgcolor="#080907"
+       style="width:100%;background-color:#080907;
+              background-image:url('https://ishdonline.com/email-assets/ishd-email-tile-64x64.png');
+              background-repeat:repeat;">
+  <tr>
+    <td align="center" style="padding:0;">
+      <table role="presentation" class="ishd-card" width="600" cellpadding="0" cellspacing="0" border="0"
+             style="width:600px;background-color:#080907;">
+
+        <!-- >>>>>>>>>> existing Listmonk body content goes in HERE <<<<<<<<<< -->
+
+
+<!-- ==========================================================================
+     BLOCK 3 — HEADER BAND  (paste at the [GRAPHIC SLOT] marker, as the first
+     row of the content column)
+     ========================================================================== -->
+        <tr>
+          <td bgcolor="#080907" style="background-color:#080907;line-height:0;">
+            <img src="https://ishdonline.com/email-assets/ishd-email-header-1200x560.png"
+                 class="ishd-shrink" width="600" height="280"
+                 alt="ISH D — House · Disco · Garage — Transmission List"
+                 style="display:block;width:600px;max-width:600px;height:auto;border:0;">
+          </td>
+        </tr>
+
+        <!-- content well: keep the body text on FLAT void so nothing sits on
+             texture. Wrap the DRAFT copy block (and {{ .Tx.Data.key }}) in this. -->
+        <tr>
+          <td bgcolor="#080907" style="background-color:#080907;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              <tr>
+                <td class="ishd-well" style="padding:38px 40px 30px;">
+                  <!-- >>>>>>>>>> existing copy + {{ .Tx.Data.key }} goes HERE <<<<<<<<<< -->
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+
+<!-- ==========================================================================
+     BLOCK 4 — FOOTER BAND (last row of the content column, before the
+     wrapper closes) + unsubscribe row
+     ========================================================================== -->
+        <tr>
+          <td bgcolor="#080907" style="background-color:#080907;line-height:0;">
+            <img src="https://ishdonline.com/email-assets/ishd-email-footer-1200x400.png"
+                 class="ishd-shrink" width="600" height="200"
+                 alt="ISH D — Dance floor / live — © 2026 ISH D"
+                 style="display:block;width:600px;max-width:600px;height:auto;border:0;">
+          </td>
+        </tr>
+        <tr>
+          <td class="ishd-unsub" style="background-color:#080907;">
+            <!-- keep the template's own unsubscribe placeholder if it differs -->
+            <a href="{{ UnsubscribeURL }}">Unsubscribe</a> &nbsp;·&nbsp; ishdonline.com
+          </td>
+        </tr>
+
+
+<!-- ==========================================================================
+     BLOCK 2b — GROUND WRAPPER (close)
+     ========================================================================== -->
+      </table>
+    </td>
+  </tr>
+</table>
+
+
+<!-- ==========================================================================
+     KEY RENDERING NOTE (do not "fix" this)
+     The access key in the transactional welcome mail renders as
+     {{ .Tx.Data.key }} — tx templates read custom data from .Tx.Data.
+     Styling hook if wanted: wrap the output in
+     <span class="ishd-key">…</span> (orange plate, void text — matches the
+     site's signal-orange selection/CTA treatment).
+     ========================================================================== -->
