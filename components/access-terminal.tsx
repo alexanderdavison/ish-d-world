@@ -3,12 +3,16 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { DECK_REFRESH_EVENT } from "@/components/signal-deck";
 
 // Unrouted Node gate — validates the personal access key against ishd-api.
 // Mechanic (decided 2026-09-09): per-person keys, no expiry.
 // Contract + docs: homelab-configs/services/ishd/README.md
 const ACCESS_ENDPOINT = "https://api.ishdonline.com/access";
 const UNLOCK_STORAGE_KEY = "ishd-unrouted-open";
+// The key itself stays on this device so the shared player can fetch gated audio later
+// without asking again. "CLOSE THE TERMINAL" clears both values.
+const ACCESS_KEY_STORAGE = "ishd-unrouted-key";
 
 type State = "idle" | "loading" | "refused" | "ratelimited" | "offline";
 
@@ -44,9 +48,11 @@ export function AccessTerminal() {
         if (data?.ok) {
           try {
             window.localStorage.setItem(UNLOCK_STORAGE_KEY, "1");
+            window.localStorage.setItem(ACCESS_KEY_STORAGE, key.trim().toUpperCase());
           } catch {
             /* ignore */
           }
+          window.dispatchEvent(new Event(DECK_REFRESH_EVENT));
           setState("idle");
           setOpen(true);
           return;
@@ -67,9 +73,11 @@ export function AccessTerminal() {
   function lock() {
     try {
       window.localStorage.removeItem(UNLOCK_STORAGE_KEY);
+      window.localStorage.removeItem(ACCESS_KEY_STORAGE);
     } catch {
       /* ignore */
     }
+    window.dispatchEvent(new Event(DECK_REFRESH_EVENT));
     setKey("");
     setState("idle");
     setOpen(false);

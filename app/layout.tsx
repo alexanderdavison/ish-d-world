@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { SignalDeckProvider } from "@/components/signal-deck";
+import { SignalDock } from "@/components/signal-dock";
 
 export const metadata: Metadata = {
   title: {
@@ -21,7 +23,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {/* One audio engine for the whole site: mounted here so playback survives
+            navigation between pages. See components/signal-deck.tsx. */}
+        <SignalDeckProvider>
+          {children}
+          <SignalDock />
+        </SignalDeckProvider>
+      </body>
     </html>
   );
 }
