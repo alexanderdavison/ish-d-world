@@ -27,12 +27,6 @@ const DEFAULTS = {
     ["FOLLOW", "INSTAGRAM", "https://instagram.com/ishd"],
     ["DATES", "RESIDENT ADVISOR", "https://ra.co/dj/ishd"],
   ],
-  tracks: [
-    { id: "latest-dispatch", title: "Latest Dispatch", subtitle: "Current transmission", kind: "youtube", href: "https://youtube.com/@ishdofficial", access: "PUBLIC" },
-    { id: "dispatch-01", title: "Recent / 01", subtitle: "Episode metadata pending", kind: "audio", access: "PUBLIC" },
-    { id: "dispatch-02", title: "Recent / 02", subtitle: "Episode metadata pending", kind: "audio", access: "PUBLIC" },
-    { id: "dispatch-03", title: "Recent / 03", subtitle: "Episode metadata pending", kind: "audio", access: "PUBLIC" },
-  ],
   dispatchLinks: [
     ["YOUTUBE", "https://youtube.com/@ishdofficial"],
     ["SOUNDCLOUD", "https://soundcloud.com/ishid"],

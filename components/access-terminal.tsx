@@ -3,7 +3,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { DECK_REFRESH_EVENT } from "@/components/signal-deck";
 
 // Unrouted Node gate — validates the personal access key against ishd-api.
 // Mechanic (decided 2026-09-09): per-person keys, no expiry.
@@ -52,7 +51,6 @@ export function AccessTerminal() {
           } catch {
             /* ignore */
           }
-          window.dispatchEvent(new Event(DECK_REFRESH_EVENT));
           setState("idle");
           setOpen(true);
           return;
@@ -77,7 +75,6 @@ export function AccessTerminal() {
     } catch {
       /* ignore */
     }
-    window.dispatchEvent(new Event(DECK_REFRESH_EVENT));
     setKey("");
     setState("idle");
     setOpen(false);

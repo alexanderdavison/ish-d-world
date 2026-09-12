@@ -8,21 +8,11 @@ import { useEffect, useState } from "react";
 
 type Row = [string, string, string];
 
-type Track = {
-  id: string;
-  title: string;
-  subtitle: string;
-  kind: "audio" | "youtube";
-  href?: string;
-  access: "PUBLIC" | "WEB EXCLUSIVE";
-};
-
 type Content = {
   version: number;
   updatedAt: string;
   direct: Row[];
   external: Row[];
-  tracks: Track[];
   dispatchLinks: Row[];
   demos: { number: string; title: string; status: string; note: string }[];
   releases: { title: string; meta: string; body: string; href: string; action: string }[];
@@ -266,37 +256,6 @@ export default function AdminPage() {
       <section className="admin-card">
         <h2>CONTACT POINTS — PLATFORMS</h2>
         <LinkRows title="external" rows={content.external} onChange={(rows) => { setContent({ ...content, external: rows }); setDirty(true); }} />
-      </section>
-
-      <section className="admin-card">
-        <h2>CLUB DISPATCH — TRACKS</h2>
-        {content.tracks.map((t, i) => (
-          <div className="admin-row" key={t.id || i}>
-            <input value={t.title} placeholder="TITLE" onChange={(e) => {
-              const tracks = content.tracks.map((x, idx) => (idx === i ? { ...x, title: e.target.value } : x));
-              setContent({ ...content, tracks }); setDirty(true);
-            }} />
-            <input value={t.subtitle} placeholder="SUBTITLE" onChange={(e) => {
-              const tracks = content.tracks.map((x, idx) => (idx === i ? { ...x, subtitle: e.target.value } : x));
-              setContent({ ...content, tracks }); setDirty(true);
-            }} />
-            <select value={t.kind} onChange={(e) => {
-              const tracks = content.tracks.map((x, idx) => (idx === i ? { ...x, kind: e.target.value as Track["kind"] } : x));
-              setContent({ ...content, tracks }); setDirty(true);
-            }}>
-              <option value="audio">audio</option>
-              <option value="youtube">youtube</option>
-            </select>
-            <input value={t.href || ""} placeholder="YT URL (if youtube)" onChange={(e) => {
-              const tracks = content.tracks.map((x, idx) => (idx === i ? { ...x, href: e.target.value } : x));
-              setContent({ ...content, tracks }); setDirty(true);
-            }} />
-          </div>
-        ))}
-        <button type="button" className="admin-mini" onClick={() => {
-          setContent({ ...content, tracks: [...content.tracks, { id: `t-${Date.now()}`, title: "NEW", subtitle: "", kind: "audio", access: "PUBLIC" }] });
-          setDirty(true);
-        }}>+ add track</button>
       </section>
 
       <section className="admin-card">
