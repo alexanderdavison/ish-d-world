@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./media-player.css";
 import { SignalDeckProvider } from "@/components/signal-deck";
-import { SignalDock } from "@/components/signal-dock";
+import { MediaPlayerLayer } from "@/components/media-player";
 
 export const metadata: Metadata = {
   title: {
@@ -28,7 +29,7 @@ export default function RootLayout({
             navigation between pages. See components/signal-deck.tsx. */}
         <SignalDeckProvider>
           {children}
-          <SignalDock />
+          <MediaPlayerLayer />
         </SignalDeckProvider>
       </body>
     </html>

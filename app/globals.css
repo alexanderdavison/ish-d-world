@@ -1539,3 +1539,120 @@ button, input { font: inherit; }
 /* The deck owns the bottom-right corner: lift the fixed Unrouted Node link clear of it. */
 .unrouted-node { bottom: 152px; }
 @media (max-width: 900px) { .unrouted-node { bottom: 108px; } }
+/* ============================================================================
+   SHAPE LANGUAGE — interactive chrome
+   Proposal 2026-09-11. Reference: oxen.studio shape language — radii 15/16/35,
+   50% circles, soft shadow presets, no clip-paths.
+
+   SCOPE: buttons, inputs, cards, panels, sliders. Nothing else.
+   UNTOUCHED BY DESIGN: the map, the type, the palette (--void/--paper/--ink/
+   --signal/--indigo are not redeclared here) and the Signal Deck's sculpted
+   clip-path shells.
+
+   Every value below is a token: changing the four radii re-tunes the whole
+   pass without touching a single selector.
+   ========================================================================== */
+
+:root {
+  /* radii — reference scale */
+  --r-ctl: 8px;    /* buttons, inputs */
+  --r-card: 10px;   /* cards, panels */
+  --r-cover: 6px;  /* artwork tiles inside cards */
+  --r-oval: 18px;   /* large surfaces */
+  --r-circle: 50%;
+
+  /* soft shadow presets (replaces the hard Npx Npx 0 offsets on chrome) */
+  --sh-raised: 0 2px 4px rgba(23, 24, 21, .10), 0 8px 20px rgba(23, 24, 21, .10);
+  --sh-raised-hi: 0 4px 8px rgba(23, 24, 21, .12), 0 14px 30px rgba(23, 24, 21, .16);
+  --sh-inset: inset 0 1px 2px rgba(23, 24, 21, .14);
+  --sh-oval: 0 18px 38px rgba(23, 24, 21, .18);
+
+  --shape-ease: cubic-bezier(.4, 0, .2, 1);
+}
+
+/* ---- buttons ------------------------------------------------------------- */
+
+.return-link {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-raised);
+  transition: transform .18s var(--shape-ease), box-shadow .18s var(--shape-ease);
+}
+/* the press motion inverts: a hard offset shadow presses down, a soft one lifts */
+.return-link:hover,
+.return-link:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-raised-hi);
+}
+
+.transmission-invite a {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-raised);
+  transition: transform .18s var(--shape-ease), box-shadow .18s var(--shape-ease);
+}
+.transmission-invite a:hover,
+.transmission-invite a:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: var(--sh-raised-hi);
+}
+
+.transmission-form [data-slot="button"] {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-raised);
+}
+.transmission-form [data-slot="button"]:hover { box-shadow: var(--sh-raised-hi); }
+
+.epk-controls [data-slot="button"] { border-radius: var(--r-ctl); }
+
+.access-terminal [data-slot="button"] {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-raised);
+}
+
+.player-controls [data-slot="button"] { border-radius: var(--r-ctl); }
+
+/* ---- inputs -------------------------------------------------------------- */
+
+.transmission-form [data-slot="input"] {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-inset);
+}
+.transmission-form [data-slot="input"]:focus-visible {
+  box-shadow: var(--sh-inset), 0 0 0 2px var(--indigo);
+}
+
+.access-terminal [data-slot="input"] {
+  border-radius: var(--r-ctl);
+  box-shadow: var(--sh-inset);
+}
+
+/* ---- sliders ------------------------------------------------------------- */
+
+.player-timeline [data-slot="slider-track"] { border-radius: 999px; }
+.player-timeline [data-slot="slider-range"] { border-radius: 999px; }
+.player-timeline [data-slot="slider-thumb"] {
+  width: 18px;
+  height: 18px;
+  border-radius: var(--r-circle);
+}
+
+/* ---- cards + panels ------------------------------------------------------ */
+
+.utility-terminal {
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-oval);
+}
+.demo-slot { border-radius: var(--r-card); }
+.demo-cover { border-radius: var(--r-cover); }
+/* the cover carries an inset frame; it must follow the cover's corner or it
+   leaves a square sliver across the rounded edge */
+.demo-cover::after { border-radius: calc(var(--r-cover) - 4px); }
+
+/* ---- responsive: keep the mobile offsets consistent with the soft model --- */
+
+@media (max-width: 760px) {
+  .return-link,
+  .transmission-invite a,
+  .transmission-form [data-slot="button"],
+  .access-terminal [data-slot="button"] { box-shadow: var(--sh-raised); }
+  .utility-terminal { box-shadow: var(--sh-oval); }
+}

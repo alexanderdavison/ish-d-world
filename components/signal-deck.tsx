@@ -82,6 +82,17 @@ type DeckApi = {
   toggleLoop: () => void;
   setView: (view: View) => void;
   jumpToChapter: (seconds: number) => void;
+  /** Live metering tap for the LED meters. Null until playback has started once. */
+  getMeterTap: () => MeterTap | null;
+};
+
+export type MeterTap = {
+  /** In the audible path: source -> spectrum -> destination. */
+  spectrum: AnalyserNode;
+  left: AnalyserNode;
+  right: AnalyserNode;
+  /** false when the file is mono, in which case both meters share channel 0. */
+  stereo: boolean;
 };
 
 const DeckContext = createContext<DeckApi | null>(null);
@@ -187,12 +198,80 @@ export function SignalDeckProvider({ children }: { children: React.ReactNode }) 
     return () => window.clearTimeout(timer);
   }, [catalogState, items, gated, refresh]);
 
+  // ---- live metering tap -------------------------------------------------------------
+  // createMediaElementSource may be called ONCE per element (a second call throws), so it is
+  // guarded by a ref. Once tapped, the element's audio leaves through the graph and nowhere
+  // else: the spectrum analyser is wired on to the destination, and if that link is ever
+  // removed the player goes SILENT. A cross-origin element tapped without crossOrigin does
+  // not error either - it returns flat zeros forever, meters dead while audio plays.
+  const tapRef = useRef<MeterTap | null>(null);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  const ensureMeterTap = useCallback((): MeterTap | null => {
+    if (tapRef.current) return tapRef.current;
+    const audio = audioRef.current;
+    if (!audio) return null;
+    try {
+      const Ctor =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (!Ctor) return null;
+      const ctx = new Ctor();
+      const source = ctx.createMediaElementSource(audio);
+
+      // AUDIBLE PATH FIRST. The moment createMediaElementSource succeeds the element's output
+      // leaves through the graph and nowhere else, so this link has to be made before any of
+      // the metering work. If the stereo split below ever threw before this ran, the player
+      // would go silent - the worst possible failure for a metering feature.
+      const spectrum = ctx.createAnalyser();
+      spectrum.fftSize = 2048;
+      spectrum.smoothingTimeConstant = 0.78;
+      spectrum.minDecibels = -70;
+      spectrum.maxDecibels = -6;
+      source.connect(spectrum);
+      spectrum.connect(ctx.destination);
+
+      // Metering only from here on; a failure costs the meters, never the sound.
+      const left = ctx.createAnalyser();
+      const right = ctx.createAnalyser();
+      for (const node of [left, right]) {
+        node.fftSize = 1024;
+        node.smoothingTimeConstant = 0.62;
+      }
+      let stereo = true;
+      try {
+        // mono files would leave the right meter permanently dead, which reads as a fault
+        if ((source.channelCount || 2) > 1) {
+          const splitter = ctx.createChannelSplitter(2);
+          source.connect(splitter);
+          splitter.connect(left, 0);
+          splitter.connect(right, 1);
+        } else {
+          stereo = false;
+          source.connect(left, 0);
+          source.connect(right, 0);
+        }
+      } catch {
+        stereo = false;
+        try { source.connect(left, 0); source.connect(right, 0); } catch { /* meters only */ }
+      }
+      audioCtxRef.current = ctx;
+      tapRef.current = { spectrum, left, right, stereo };
+      return tapRef.current;
+    } catch {
+      return null;
+    }
+  }, []);
+
   const play = useCallback(async () => {
     const audio = audioRef.current;
     if (!audio || !currentRef.current) return;
     try {
       setError("");
       setStatus("loading");
+      ensureMeterTap();
+      // a context built before a gesture starts suspended; the play tap IS the gesture
+      void audioCtxRef.current?.resume();
       await audio.play();
       setStatus("playing");
       setView((value) => (value === "dormant" ? "compact" : value));
@@ -200,7 +279,7 @@ export function SignalDeckProvider({ children }: { children: React.ReactNode }) 
       setStatus("error");
       setError("SIGNAL LOST / SOURCE UNAVAILABLE");
     }
-  }, []);
+  }, [ensureMeterTap]);
 
   const pause = useCallback(() => {
     audioRef.current?.pause();
@@ -414,6 +493,7 @@ export function SignalDeckProvider({ children }: { children: React.ReactNode }) 
     toggleLoop,
     setView,
     jumpToChapter: (seconds: number) => seek(seconds),
+    getMeterTap: () => tapRef.current,
   };
 
   return (
@@ -421,6 +501,7 @@ export function SignalDeckProvider({ children }: { children: React.ReactNode }) 
       {children}
       <audio
         ref={audioRef}
+        crossOrigin="anonymous"
         preload="metadata"
         loop={loop}
         onLoadedMetadata={(event) => {

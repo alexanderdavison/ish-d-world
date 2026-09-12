@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { StationPage } from "@/components/station-page";
+import { MediaPlayerInline } from "@/components/media-player";
 import { TransmissionList } from "@/components/transmission-list";
 import { readContent } from "@/lib/site";
 
@@ -13,6 +14,7 @@ export default function MediaPage() {
     <StationPage code="05" eyebrow="RECURRING MIX SERIES" title="Club Dispatch" kind="media">
       <p className="panel-meta">MIXES FROM THE ROOM</p>
       <p className="media-intro">An ongoing mix series from Ish D, moving through house, disco, gospel, and garage.</p>
+      <MediaPlayerInline />
       <TransmissionList />
       <div className="dispatch-links">
         <span>LISTEN ELSEWHERE</span>
