@@ -3,7 +3,12 @@ import { StationPage } from "@/components/station-page";
 import { readContent } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "The Room" };
+export const metadata: Metadata = {
+  title: "The Room",
+  description:
+    "The Room — studio work and private demos from ISH D's Composition Room in Los Angeles.",
+  alternates: { canonical: "/projects" },
+};
 
 function DemoSlots() {
   const content = readContent();

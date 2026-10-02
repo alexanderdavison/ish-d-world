@@ -2,7 +2,12 @@ import type { Metadata } from "next";
 import { EpkCarousel } from "@/components/epk-carousel";
 import { StationPage } from "@/components/station-page";
 
-export const metadata: Metadata = { title: "About" };
+export const metadata: Metadata = {
+  title: "About",
+  description:
+    "ISH D is a Los Angeles DJ and producer working in the Black American house tradition — deep house, soulful house, disco and UK garage. Studio work from the Composition Room.",
+  alternates: { canonical: "/about" },
+};
 
 export default function AboutPage() {
   return (

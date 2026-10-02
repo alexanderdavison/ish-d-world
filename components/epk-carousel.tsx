@@ -25,7 +25,7 @@ export function EpkCarousel() {
           <p className="panel-meta">EPK / ARTIST FILE</p>
           <strong>ORIGINAL PRESS KIT</strong>
         </div>
-        <a href="/epk/IshD_EPK_2024.pdf" download>DOWNLOAD PDF ↓</a>
+        <a href="/epk/IshD_EPK_2026.pdf" download>DOWNLOAD PDF ↓</a>
       </div>
 
       <figure className="epk-frame" ref={frameRef}>

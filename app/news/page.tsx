@@ -3,7 +3,12 @@ import { StationPage } from "@/components/station-page";
 import { readContent } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Transmissions" };
+export const metadata: Metadata = {
+  title: "Transmissions",
+  description:
+    "Current signals from ISH D — new releases, transmissions and works in progress.",
+  alternates: { canonical: "/news" },
+};
 
 export default function NewsPage() {
   const content = readContent();

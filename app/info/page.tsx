@@ -4,7 +4,11 @@ import { StationPage } from "@/components/station-page";
 import { readContent } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Contact Points" };
+export const metadata: Metadata = {
+  title: "Contact Points",
+  description: "Listen, watch, follow and book — every ISH D contact point in one place.",
+  alternates: { canonical: "/info" },
+};
 
 export default function InfoPage() {
   const content = readContent();

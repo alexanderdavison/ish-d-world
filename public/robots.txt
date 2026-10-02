@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Utility + gated routes — never index
+Disallow: /admin
+Disallow: /api/
+Disallow: /unrouted
+Disallow: /under-construction
+
+Sitemap: https://ishdonline.com/sitemap.xml

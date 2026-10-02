@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StationPage } from "@/components/station-page";
 
-export const metadata: Metadata = { title: "Under Construction" };
+export const metadata: Metadata = {
+  title: "Under Construction",
+  robots: { index: false, follow: false },
+};
 
 export default function UnderConstructionPage() {
   return (
