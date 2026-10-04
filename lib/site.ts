@@ -31,6 +31,15 @@ const DEFAULTS = {
     ["YOUTUBE", "https://youtube.com/@ishdofficial"],
     ["SOUNDCLOUD", "https://soundcloud.com/ishid"],
   ],
+  // Club Dispatch nodes — one entry per musical feel. The [code, label, url]
+  // shape matches `external`/`direct` so the admin's LinkRows editor handles it
+  // with no extra UI, and the label slugifies into the /l/<slug> short link.
+  // Read by BOTH /links and the /l/[slug] redirect, so the node list is the one
+  // source of truth for a node's destination.
+  nodes: [
+    ["NODE 01", "GROOVE", "https://open.spotify.com/playlist/2XT4CRdupzz799q6C6uD1W"],
+    ["NODE 02", "SOULFUL", "https://open.spotify.com/playlist/43U9SndVIjUy4vLmULMrUN"],
+  ],
   demos: [
     { number: "01", title: "NEW HOUSE RECORDS", status: "WRITING", note: "DRUM + ARRANGEMENT PASS" },
     { number: "02", title: "I4D VOL. 2", status: "MIX REVIEW", note: "DISCO EDIT SEQUENCE" },
@@ -44,6 +53,19 @@ const DEFAULTS = {
 };
 
 export type SiteContent = typeof DEFAULTS;
+
+/**
+ * Label → /l/<slug> short-link slug.
+ *
+ * ONE definition, imported by both app/links/page.tsx and app/l/[slug]/route.ts,
+ * so the printed short link and the route that serves it can never drift apart.
+ */
+export function nodeSlug(label: string): string {
+  return label
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+}
 
 export function ensureContentDir() {
   if (!existsSync(CONTENT_DIR)) mkdirSync(CONTENT_DIR, { recursive: true, mode: 0o755 });

@@ -14,6 +14,7 @@ type Content = {
   direct: Row[];
   external: Row[];
   dispatchLinks: Row[];
+  nodes: Row[];
   demos: { number: string; title: string; status: string; note: string }[];
   releases: { title: string; meta: string; body: string; href: string; action: string }[];
 };
@@ -261,6 +262,11 @@ export default function AdminPage() {
       <section className="admin-card">
         <h2>CLUB DISPATCH — LISTEN ELSEWHERE</h2>
         <LinkRows title="dispatch" rows={content.dispatchLinks} onChange={(rows) => { setContent({ ...content, dispatchLinks: rows }); setDirty(true); }} />
+      </section>
+
+      <section className="admin-card">
+        <h2>CLUB DISPATCH — NODES (drives /links + the /l/&lt;slug&gt; short links)</h2>
+        <LinkRows title="nodes" rows={content.nodes} onChange={(rows) => { setContent({ ...content, nodes: rows }); setDirty(true); }} />
       </section>
 
       <section className="admin-card">

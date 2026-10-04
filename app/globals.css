@@ -1049,3 +1049,231 @@ button, input { font: inherit; }
   .access-terminal [data-slot="button"] { box-shadow: var(--sh-raised); }
   .utility-terminal { box-shadow: var(--sh-oval); }
 }
+
+/* ==========================================================================
+   /links — Link Index
+   --------------------------------------------------------------------------
+   SCOPE: every rule is namespaced under `.link-index` so nothing here can
+   collide with the site's global classes (.card, .grid, .chip, .sect, .mast
+   all already mean something else in this stylesheet).
+
+   SURFACE: this page uses the LANDING surface (--void ground + --paper cards),
+   NOT the `.interior` surface (--paper ground + --ink text) that StationPage
+   renders. Do not wrap /links in StationPage or the whole page inverts.
+   ========================================================================== */
+
+.link-index {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 30px;
+}
+
+/* ---- masthead ---------------------------------------------------------- */
+
+.link-index .li-mast {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 26px 22px 13px;
+}
+
+.link-index .li-wordmark {
+  display: flex;
+  align-items: baseline;
+  gap: 3px;
+  margin: 0;
+  font-family: var(--display, "Silkscreen", monospace);
+  font-size: 34px;
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: .02em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+/* the orange period */
+.link-index .li-wordmark i {
+  width: 8px;
+  height: 8px;
+  background: var(--signal);
+  transition: transform .18s var(--shape-ease, ease);
+}
+
+.link-index .li-meta {
+  margin: 0;
+  text-align: right;
+  font-size: 9px;
+  line-height: 1.7;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.link-index .li-rail {
+  height: 1px;
+  margin: 0 22px;
+  background: var(--line);
+}
+
+/* ---- node cards (the heroes) ------------------------------------------- */
+
+.link-index .li-hero {
+  padding: 15px 22px 0;
+}
+
+.link-index .li-card {
+  position: relative;
+  display: block;
+  margin-bottom: 9px;
+  padding: 15px 15px 13px;
+  background: var(--paper);
+  color: var(--ink);
+  border-left: 5px solid var(--signal);
+  border-radius: var(--r-card, 10px);
+  box-shadow: var(--sh-raised);
+  text-decoration: none;
+  transition: background .18s var(--shape-ease, ease), box-shadow .18s var(--shape-ease, ease);
+}
+
+.link-index .li-card:hover,
+.link-index .li-card:focus-visible {
+  background: #fffdf6;
+  box-shadow: var(--sh-raised-hi);
+}
+
+.link-index .li-card-k {
+  display: block;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.link-index .li-card-t {
+  display: block;
+  margin-top: 6px;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
+.link-index .li-card-m {
+  display: block;
+  margin-top: 7px;
+  font-size: 9px;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: rgba(23, 24, 21, .58);
+}
+
+.link-index .li-card-go {
+  position: absolute;
+  right: 14px;
+  bottom: 13px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 9px;
+  letter-spacing: .06em;
+  color: rgba(23, 24, 21, .55);
+}
+
+.link-index .li-card-go i {
+  width: 5px;
+  height: 5px;
+  background: var(--signal);
+}
+
+/* ---- sections ---------------------------------------------------------- */
+
+.link-index .li-sect {
+  margin: 19px 22px 0;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.link-index .li-sect::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 8px;
+  background: var(--line);
+}
+
+/* ---- chips ------------------------------------------------------------- */
+
+.link-index .li-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  padding: 9px 22px 0;
+}
+
+.link-index .li-chip {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 58px;
+  padding: 11px 12px;
+  background: var(--void-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--r-ctl, 8px);
+  color: var(--paper);
+  text-decoration: none;
+  transition: border-color .18s var(--shape-ease, ease), transform .18s var(--shape-ease, ease);
+}
+
+.link-index .li-chip:hover,
+.link-index .li-chip:focus-visible {
+  border-color: var(--signal);
+  transform: translateY(-2px);
+}
+
+.link-index .li-chip-t {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--paper);
+}
+
+.link-index .li-chip-s {
+  font-size: 8px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+
+.link-index .li-wide { grid-column: 1 / -1; }
+
+/* ---- footer ------------------------------------------------------------ */
+
+.link-index .li-foot {
+  margin: 21px 22px 0;
+  padding-top: 12px;
+  border-top: 1px solid var(--line);
+  font-size: 9px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--paper-dim);
+}
+
+.link-index .li-foot b { color: var(--paper); font-weight: 600; }
+
+@media (min-width: 900px) {
+  .link-index {
+    max-width: 520px;
+    border-left: 1px solid var(--line);
+    border-right: 1px solid var(--line);
+  }
+}
