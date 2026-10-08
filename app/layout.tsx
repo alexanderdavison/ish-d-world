@@ -25,15 +25,21 @@ export const metadata: Metadata = {
     title: "ISH D — Deep House, Soulful House & Gospel House DJ",
     description:
       "Los Angeles DJ & producer in the Black American house tradition. Deep house, soulful house & gospel house. Club Dispatch + Composition Room.",
-    // NOTE: no `images` array — /og/ishd-og.png is not produced yet (404).
-    // Restore per README-DEPLOY-SPEC.md §2 when the asset lands.
+    images: [
+      {
+        url: "https://ishdonline.com/og/ishd-og-1200x630.png",
+        width: 1200,
+        height: 630,
+        alt: "ISH D — A Transmission From The Dancefloor",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "ISH D — Deep House, Soulful House & Gospel House DJ",
     description:
       "Los Angeles DJ & producer in the Black American house tradition. Club Dispatch + Composition Room.",
-    // NOTE: no `images` array — /og/ishd-og.png is not produced yet (404).
+    images: ["https://ishdonline.com/og/ishd-og-1200x630.png"],
   },
   icons: {
     icon: "/favicon.svg",
@@ -58,7 +64,7 @@ const artistSchema = {
     "UK Garage",
     "Black House Music",
   ],
-  // NOTE: `image` intentionally omitted — /og/ishd-og.png is not produced yet (404).
+  image: "https://ishdonline.com/og/ishd-og-1200x630.png",
   sameAs: [
     "https://open.spotify.com/artist/5P6jJ9rSUU5KMnoQDmaPuo",
     "https://music.apple.com/us/artist/ish-d/1013408196",
