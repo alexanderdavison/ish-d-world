@@ -23,7 +23,7 @@ export function StationPage({ code, eyebrow, title, kind, children, secondary }:
       </svg>
 
       <header className="interior-header">
-        <div><span>BLACK HOUSE MUSIC</span><small> / STN.{code}</small></div>
+        <div><span>HOUSE MUSIC</span><small> / STN.{code}</small></div>
         <div className="system-state"><i /> SIGNAL ACTIVE</div>
       </header>
 

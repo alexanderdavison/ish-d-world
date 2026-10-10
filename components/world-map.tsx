@@ -86,7 +86,7 @@ export function WorldMap() {
 
       <header className="world-header">
         <div>
-          <span className="eyebrow">BLACK HOUSE MUSIC</span>
+          <span className="eyebrow">HOUSE MUSIC</span>
           <span className="coordinates">34.0522° N · 118.2437° W</span>
         </div>
         <div className="system-state"><i /> SIGNAL ACTIVE</div>
@@ -204,6 +204,15 @@ export function WorldMap() {
       </section>
 
       <div className="travel-aperture" aria-hidden="true" />
+
+      <section className="world-about" aria-labelledby="who-is-ishd">
+        <h2 id="who-is-ishd">Who is ISH D</h2>
+        <p>
+          ISH D is a Grammy-nominated DJ and producer. He plays deep house, soulful house,
+          gospel house, disco and UK garage, and runs Composition Room, his own label, and
+          Club Dispatch, a recurring mix series. Full sets, mixes and records land here.
+        </p>
+      </section>
 
       <footer className="world-footer">
         <span>© 2026 ISH D</span>

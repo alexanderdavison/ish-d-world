@@ -8,7 +8,7 @@ export const metadata: Metadata = {
     template: "%s — ISH D",
   },
   description:
-    "ISH D — Los Angeles DJ & producer in the Black American house tradition. Deep house, soulful house & gospel house mixes, disco, UK garage. Club Dispatch + Composition Room.",
+    "ISH D — Los Angeles DJ & producer. Deep house, soulful house, gospel house, disco and UK garage. Club Dispatch mixes + Composition Room.",
   alternates: {
     canonical: "/",
   },
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     url: "https://ishdonline.com",
     title: "ISH D — Deep House, Soulful House & Gospel House DJ",
     description:
-      "Los Angeles DJ & producer in the Black American house tradition. Deep house, soulful house & gospel house. Club Dispatch + Composition Room.",
+      "Los Angeles DJ & producer. Deep house, soulful house, gospel house, disco and UK garage. Club Dispatch + Composition Room.",
     images: [
       {
         url: "https://ishdonline.com/og/ishd-og-1200x630.png",
@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ISH D — Deep House, Soulful House & Gospel House DJ",
     description:
-      "Los Angeles DJ & producer in the Black American house tradition. Club Dispatch + Composition Room.",
+      "Deep house, soulful house, disco and UK garage. Club Dispatch + Composition Room.",
     images: ["https://ishdonline.com/og/ishd-og-1200x630.png"],
   },
   icons: {
@@ -55,14 +55,14 @@ const artistSchema = {
   alternateName: ["Ish D", "ISH D."],
   url: "https://ishdonline.com",
   description:
-    "Los Angeles DJ and producer working in the Black American house tradition — deep house, soulful house, gospel house, disco and UK garage.",
+    "DJ and producer working across deep house, soulful house, gospel house, disco and UK garage.",
   genre: [
     "Deep House",
     "Soulful House",
     "Gospel House",
     "Disco",
     "UK Garage",
-    "Black House Music",
+    "House Music",
   ],
   image: "https://ishdonline.com/og/ishd-og-1200x630.png",
   sameAs: [
