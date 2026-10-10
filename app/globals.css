@@ -423,47 +423,6 @@ button, input { font: inherit; }
 .footer-signals:hover,
 .footer-signals:focus-visible { background: var(--signal); color: var(--void); outline: none; }
 
-/* Homepage identity block — a quiet footnote to the world, not a hero.
-   The map is full-bleed: every corner is occupied (signal mast lower-left,
-   floor grid + station cluster along the bottom). So this sits in the one
-   clear pocket — right of the mast, left of the CONTACT POINTS station,
-   above the lower dancer row — with left/bottom/width tied to those map
-   objects as viewport percentages so the two cannot collide as the window
-   changes. Same type tokens as .eyebrow / .panel-meta; body copy at
-   --paper-dim; no border, no card, no new colours. */
-.world-about {
-  position: absolute;
-  z-index: 8;
-  left: calc(7vw + 126px);
-  bottom: calc(24.5vh + 34px);
-  width: calc(31vw - 130px);
-  pointer-events: none;
-}
-.world-about h2 {
-  margin: 0 0 9px;
-  color: var(--signal);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-}
-.world-about p {
-  margin: 0;
-  max-width: 62ch;
-  color: var(--paper-dim);
-  font-size: clamp(8px, .9vw, 13px);
-  line-height: 1.7;
-  opacity: .7;
-}
-
-/* Very short desktop windows: the pocket between the wordmark and the lower
-   dancer row is too shallow for body-sized leading, so tighten it there
-   rather than let the block reach the wordmark. */
-@media (min-width: 901px) and (max-height: 700px) {
-  .world-about h2 { margin-bottom: 5px; }
-  .world-about p { line-height: 1.55; }
-}
-
 /* Interior stations */
 .interior {
   position: relative;
@@ -828,10 +787,7 @@ button, input { font: inherit; }
 }
 
 @media (max-width: 900px) {
-  .world-shell { min-height: 1820px; }
-  /* Identity block inherits the band freed under the stacked mobile map. */
-  .world-about { left: 22px; right: 22px; width: auto; bottom: 64px; }
-  .world-about p { font-size: 12px; }
+  .world-shell { min-height: 1690px; }
   .world-stage {
     left: 0;
     right: auto;
@@ -919,7 +875,7 @@ button, input { font: inherit; }
 }
 
 @media (max-width: 580px) {
-  .world-shell { min-height: 1830px; }
+  .world-shell { min-height: 1675px; }
   .world-header, .world-footer { font-size: 9px; }
   .world-header > div:first-child { gap: 0; }
   .world-stage { height: 1568px; }

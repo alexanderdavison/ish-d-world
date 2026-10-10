@@ -40,8 +40,8 @@ export default function PressKitPage() {
       <p className="panel-meta">ARTIST FILE</p>
       <p>One link for press, promoters, and booking agencies — bio, press kit, listening, and contact.</p>
       <p>
-        Ish D is a producer and DJ working across deep house, soulful house, disco, and UK
-        garage. Rhythm first, feeling intact, and made for the room.
+        Ish D is a Grammy-nominated DJ and producer working across deep house, soulful house,
+        gospel house, disco and UK garage. Rhythm first, feeling intact, and made for the room.
       </p>
       <dl className="coordinate-list">
         <div><dt>BASE</dt><dd>LOS ANGELES</dd></div>

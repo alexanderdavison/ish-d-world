@@ -13,9 +13,9 @@ export default function AboutPage() {
   return (
     <StationPage code="03" eyebrow="ARTIST COORDINATES" title="About" kind="about" secondary={<EpkCarousel />}>
       <p className="panel-meta">ISH D</p>
-      <p>Ish D is a producer and DJ working across deep house, soulful house, disco, and UK garage.</p>
+      <p>ISH D is a Grammy-nominated DJ and producer. He plays deep house, soulful house, gospel house, disco and UK garage.</p>
+      <p>He runs Composition Room, his own label and working space for records, mixes and edits, and Club Dispatch, a recurring mix series. Full sets, mixes and records land here.</p>
       <p>Rhythm first, feeling intact, and made for the room.</p>
-      <p>He is the founder of Composition Room, an independent label and working space for records, mixes, and edits.</p>
       <dl className="coordinate-list">
         <div><dt>BASE</dt><dd>LOS ANGELES</dd></div>
         <div><dt>FORMAT</dt><dd>DJ / PRODUCER</dd></div>
