@@ -31,6 +31,45 @@ export default function MediaPage() {
       />
       <p className="panel-meta">MIXES FROM THE ROOM</p>
       <p className="media-intro">An ongoing mix series from Ish D, moving through house, disco, gospel, and garage.</p>
+      {content.sets.length > 0 && (
+        <section className="recorded-sets" aria-labelledby="recorded-sets-title">
+          <header className="recorded-sets-head">
+            <h2 id="recorded-sets-title">RECORDED SETS</h2>
+            <p className="recorded-sets-lead">Recorded live in the rooms that hosted them.</p>
+          </header>
+          <ol className="set-list">
+            {content.sets.map((item, i) => (
+              <li className="set-card" key={item.youtubeId}>
+                <div className="set-frame">
+                  <iframe
+                    src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
+                    title={`${item.title} — ${item.label}`}
+                    loading="lazy"
+                    allow="encrypted-media; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  />
+                </div>
+                <div className="set-readout">
+                  <span className="set-index">— {i + 1} —</span>
+                  <span className="set-label">{item.label}</span>
+                  <strong className="set-title">{item.title}</strong>
+                  <span className="set-meta">{item.meta}</span>
+                  <p className="set-credit">{item.credit}</p>
+                  <a
+                    className="set-outbound"
+                    href={`https://www.youtube.com/watch?v=${item.youtubeId}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    WATCH ON YOUTUBE ↗
+                  </a>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </section>
+      )}
       <div className="dispatch-links">
         <span>LISTEN ELSEWHERE</span>
         {content.dispatchLinks.map(([label, href]) => (

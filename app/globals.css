@@ -656,10 +656,58 @@ button, input { font: inherit; }
 
 /* Signal archive */
 .interior-media .station-panel { grid-column: 1 / -1; }
+/* /media carries embedded video, so it must SCROLL. The desktop shell is a fixed
+   100svh frame with overflow:hidden (.interior / .interior-stage above); at
+   >=901px that silently clipped anything past the first screen — no scrollbar,
+   nothing looks broken, the content is simply absent. Measured 2026-10-12: at
+   1440x900 the station panel bottom was 992px inside a 900px frame. Only the
+   media station opts out of the frame; every other interior page keeps it. */
+.interior-media { height: auto; min-height: 100svh; overflow: visible; }
+.interior-media .interior-stage { height: auto; min-height: calc(100svh - 49px); grid-template-rows: auto auto; }
 .media-intro { margin-bottom: 28px; }
 .dispatch-links { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; letter-spacing: .08em; }
 .dispatch-links span { color: var(--signal); }
 .dispatch-links a { font-weight: 700; }
+
+/* Recorded sets — /media station 05.
+   Third-party YouTube embeds: the recordings live on the channels that made them,
+   so the player is an iframe and the only thing stored here is the video id.
+   Tokens only (--paper/--ink/--signal/--indigo) — no new colours, no new fonts. */
+.recorded-sets { margin-top: 34px; padding-top: 20px; border-top: 1px solid var(--ink); }
+.recorded-sets-head { display: grid; gap: 8px; margin: 0 0 20px; }
+.recorded-sets-head h2 { margin: 0; font-family: "Silkscreen", monospace; font-size: clamp(1.1rem, 1.9vw, 1.6rem); line-height: 1.1; text-transform: uppercase; }
+.recorded-sets .recorded-sets-lead { margin: 0; max-width: 62ch; font-size: 12px; line-height: 1.5; letter-spacing: .02em; opacity: .78; }
+/* Cap the two-up row (Ish 2026-10-12: "make them a little bit smaller") — 862px total
+   with the 22px gutter gives ~420px per card, left-aligned in the content column
+   (margin:0 — the grid is block-level, so it does not centre itself). */
+.set-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; max-width: 862px; margin: 0; padding: 0; list-style: none; }
+.set-card { min-width: 0; overflow: hidden; border: 2px solid var(--ink); border-radius: var(--r-card); background: var(--paper); box-shadow: var(--sh-raised); }
+.set-frame { position: relative; width: 100%; aspect-ratio: 16 / 9; border-bottom: 2px solid var(--ink); background: var(--ink); }
+.set-frame iframe { display: block; width: 100%; height: 100%; border: 0; }
+.set-readout { display: grid; gap: 6px; padding: 14px 15px 16px; }
+.set-index { color: var(--signal); font-family: "Silkscreen", monospace; font-size: 9px; letter-spacing: .1em; }
+.set-label { color: var(--signal); font-family: "Silkscreen", monospace; font-size: 9px; letter-spacing: .1em; text-transform: uppercase; }
+.set-title { font-family: "Silkscreen", monospace; font-size: clamp(.95rem, 1.4vw, 1.2rem); line-height: 1.22; text-transform: uppercase; }
+.set-meta { font-size: 10px; letter-spacing: .1em; opacity: .74; }
+.recorded-sets .set-credit { margin: 0; max-width: none; font-size: 11px; line-height: 1.5; opacity: .74; }
+.set-outbound {
+  justify-self: start;
+  margin-top: 6px;
+  padding: 8px 12px;
+  border: 2px solid var(--ink);
+  border-radius: var(--r-ctl);
+  background: var(--indigo);
+  color: var(--paper);
+  box-shadow: var(--sh-raised);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: .09em;
+  text-decoration: none;
+  transition: background .16s steps(2), color .16s steps(2), transform .18s var(--shape-ease), box-shadow .18s var(--shape-ease);
+}
+.set-outbound:hover,
+.set-outbound:focus-visible { background: var(--ink); transform: translateY(-2px); box-shadow: var(--sh-raised-hi); outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 900px) { .set-list { grid-template-columns: minmax(0, 1fr); gap: 20px; max-width: none; } }
 .unrouted-node {
   position: fixed;
   right: 3vw;

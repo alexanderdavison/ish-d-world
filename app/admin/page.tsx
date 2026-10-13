@@ -8,6 +8,8 @@ import { useEffect, useState } from "react";
 
 type Row = [string, string, string];
 
+type SetRow = { label: string; title: string; meta: string; credit: string; youtubeId: string };
+
 type Content = {
   version: number;
   updatedAt: string;
@@ -15,6 +17,7 @@ type Content = {
   external: Row[];
   dispatchLinks: Row[];
   nodes: Row[];
+  sets: SetRow[];
   demos: { number: string; title: string; status: string; note: string }[];
   releases: { title: string; meta: string; body: string; href: string; action: string }[];
 };
@@ -55,6 +58,50 @@ function LinkRows({
         type="button"
         className="admin-mini"
         onClick={() => onChange([...rows, ["GROUP", "LABEL", "https://"]] as Row[])}
+      >
+        + add row
+      </button>
+    </fieldset>
+  );
+}
+
+function SetRows({
+  title,
+  rows,
+  onChange,
+}: {
+  title: string;
+  rows: SetRow[];
+  onChange: (rows: SetRow[]) => void;
+}) {
+  function set(i: number, key: keyof SetRow, v: string) {
+    onChange(rows.map((r, idx) => (idx === i ? { ...r, [key]: v } : r)));
+  }
+  return (
+    <fieldset className="admin-fieldset">
+      <legend>{title}</legend>
+      {rows.map((row, i) => (
+        <div className="admin-block" key={i}>
+          <div className="admin-row">
+            <input value={row.label} placeholder="LABEL" onChange={(e) => set(i, "label", e.target.value)} />
+            <input value={row.title} placeholder="TITLE" onChange={(e) => set(i, "title", e.target.value)} />
+          </div>
+          <div className="admin-row">
+            <input value={row.meta} placeholder="META (e.g. HOUSE · 59 MIN)" onChange={(e) => set(i, "meta", e.target.value)} />
+            <input value={row.youtubeId} placeholder="YOUTUBE ID (id only — nothing is re-hosted)" onChange={(e) => set(i, "youtubeId", e.target.value)} />
+          </div>
+          <div className="admin-row">
+            <input value={row.credit} placeholder="CREDIT" onChange={(e) => set(i, "credit", e.target.value)} />
+            <button type="button" className="admin-mini" onClick={() => onChange(rows.filter((_, idx) => idx !== i))}>
+              × remove
+            </button>
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        className="admin-mini"
+        onClick={() => onChange([...rows, { label: "LABEL", title: "TITLE", meta: "", credit: "", youtubeId: "" }])}
       >
         + add row
       </button>
@@ -267,6 +314,11 @@ export default function AdminPage() {
       <section className="admin-card">
         <h2>CLUB DISPATCH — NODES (drives /links + the /l/&lt;slug&gt; short links)</h2>
         <LinkRows title="nodes" rows={content.nodes} onChange={(rows) => { setContent({ ...content, nodes: rows }); setDirty(true); }} />
+      </section>
+
+      <section className="admin-card">
+        <h2>CLUB DISPATCH — RECORDED SETS (YouTube embeds — id only, nothing is re-hosted)</h2>
+        <SetRows title="sets" rows={content.sets} onChange={(rows) => { setContent({ ...content, sets: rows }); setDirty(true); }} />
       </section>
 
       <section className="admin-card">

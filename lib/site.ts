@@ -31,6 +31,26 @@ const DEFAULTS = {
     ["YOUTUBE", "https://youtube.com/@ishdofficial"],
     ["SOUNDCLOUD", "https://soundcloud.com/ishid"],
   ],
+  // Recorded sets — full DJ sets recorded by OTHER parties and published on their
+  // own channels. We embed, we never re-host: nothing is downloaded or uploaded,
+  // so the recordings stay with the channels that own them. `youtubeId` is the
+  // only thing that reaches the embed URL.
+  sets: [
+    {
+      label: "EC104 · GOYO CLUB",
+      title: "Electric Cleaners Mix",
+      meta: "SOULFUL HOUSE · 63 MIN",
+      credit: "Recorded live at a dry cleaner · Koreatown, Los Angeles · January 2026",
+      youtubeId: "6nF8g3K8gC4",
+    },
+    {
+      label: "SEOUL COMMUNITY RADIO",
+      title: "Essence Global Sounds",
+      meta: "HOUSE · 59 MIN",
+      credit: "Recorded live in Seoul · February 2023",
+      youtubeId: "DtRxCJU1RdA",
+    },
+  ],
   // Club Dispatch nodes — one entry per musical feel. The [code, label, url]
   // shape matches `external`/`direct` so the admin's LinkRows editor handles it
   // with no extra UI, and the label slugifies into the /l/<slug> short link.
