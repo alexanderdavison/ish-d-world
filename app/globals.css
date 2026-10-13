@@ -423,12 +423,24 @@ button, input { font: inherit; }
 .footer-signals:hover,
 .footer-signals:focus-visible { background: var(--signal); color: var(--void); outline: none; }
 
-/* Interior stations */
+/* Interior stations.
+   The shell does NOT clamp to one screen. It used to be a fixed 100svh frame
+   with overflow:hidden, which silently cut off anything past the first screen:
+   no scrollbar, nothing looked broken, the content was simply absent. Measured
+   live 2026-10-13 at 1440x900: /epk hid its BOOKING contact, its RA dates, its
+   LISTEN links and the whole FULL KIT block (panel bottom 1074px inside a 900px
+   frame, page scrollHeight === innerHeight so nothing could be reached); /about,
+   /info and /under-construction clipped the same way at short viewports.
+   Owner decision 2026-10-13: generalise the exception rather than patch page by
+   page. The frame is fed by its content and grows; it never shrinks below one
+   screen (min-height), so a SHORT page looks exactly as it always did.
+   grid-template-rows is deliberately left at its base value: switching the stage
+   to `auto auto` shifts the release list 12px lower at 1440x900 (measured). */
 .interior {
   position: relative;
-  height: 100svh;
+  height: auto;
   min-height: 100svh;
-  overflow: hidden;
+  overflow: visible;
   background: var(--paper);
   color: var(--ink);
   isolation: isolate;
@@ -476,7 +488,8 @@ button, input { font: inherit; }
   grid-template-rows: auto minmax(0, 1fr);
   gap: clamp(12px, 1.4vw, 22px);
   width: min(calc(100% - 56px), 1180px);
-  height: calc(100svh - 49px);
+  height: auto;
+  min-height: calc(100svh - 49px);
   max-width: 1180px;
   margin: 0 auto;
   padding: clamp(28px, 4.5vh, 52px) 20px 88px;
@@ -566,6 +579,15 @@ button, input { font: inherit; }
 .release-item > a { min-width: 88px; padding: 12px 10px; background: var(--ink); color: var(--paper); text-align: center; font-size: 10px; font-weight: 600; text-decoration: none; transition: background .15s steps(2), color .15s steps(2); }
 .release-item > a:hover,
 .release-item > a:focus-visible { background: var(--signal); color: var(--ink); outline: 2px solid var(--ink); }
+/* Inline player for a signal that carries an `embed` (see lib/site.ts). It sits
+   under the item's title/body inside the item's text column, so the row keeps its
+   number + meta + title + body shape. The widget is compact (SoundCloud's
+   visual=false layout, 166px) — capped at 640px so it cannot stretch across the
+   1180px content column, and left-aligned like everything else in the row.
+   Tokens only: the orange handed to SoundCloud is the VALUE of --signal, which
+   the widget API requires as a literal hex (see EMBED_SIGNAL_COLOR). */
+.release-embed { margin-top: 14px; width: 100%; max-width: 640px; }
+.release-embed iframe { display: block; width: 100%; height: 166px; border: 0; background: transparent; }
 
 /* About */
 .coordinate-list { margin: 30px 0 0; border-top: 1px solid rgba(23, 24, 21, .24); }
@@ -656,14 +678,15 @@ button, input { font: inherit; }
 
 /* Signal archive */
 .interior-media .station-panel { grid-column: 1 / -1; }
-/* /media carries embedded video, so it must SCROLL. The desktop shell is a fixed
-   100svh frame with overflow:hidden (.interior / .interior-stage above); at
-   >=901px that silently clipped anything past the first screen — no scrollbar,
-   nothing looks broken, the content is simply absent. Measured 2026-10-12: at
-   1440x900 the station panel bottom was 992px inside a 900px frame. Only the
-   media station opts out of the frame; every other interior page keeps it. */
-.interior-media { height: auto; min-height: 100svh; overflow: visible; }
-.interior-media .interior-stage { height: auto; min-height: calc(100svh - 49px); grid-template-rows: auto auto; }
+/* /media lays its recorded sets out in two rows (see the recorded-sets block), so
+   it is the one interior page that needs the stage's row track changed as well.
+   The frame height itself is no longer overridden here — the base .interior /
+   .interior-stage rules above let every station grow (2026-10-13 generalisation). */
+.interior-media .interior-stage { grid-template-rows: auto auto; }
+/* The /news opt-out that used to live here is gone: the base .interior /
+   .interior-stage rules now let EVERY station grow (2026-10-13). Two mechanisms
+   doing the same job was the thing to avoid — /news computes exactly the values
+   it had before, because the scoped rule carried the same declarations. */
 .media-intro { margin-bottom: 28px; }
 .dispatch-links { display: flex; align-items: center; gap: 16px; margin-top: 16px; font-size: 10px; letter-spacing: .08em; }
 .dispatch-links span { color: var(--signal); }

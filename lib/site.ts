@@ -9,6 +9,52 @@ export const MAINTENANCE_FILE = path.join(CONTENT_DIR, ".maintenance");
 export const ADMIN_PASS_FILE = path.join(CONTENT_DIR, "admin.pass");
 export const ADMIN_SECRET_FILE = path.join(CONTENT_DIR, "admin.secret");
 
+/**
+ * A transmission can carry an inline player INSTEAD of an outbound button.
+ *
+ * Why: for signal 04 the owner asked for the mix to play on-site — "I don't want
+ * people to leave the site". A release WITH an `embed` renders the player and no
+ * outbound link; a release WITHOUT one keeps its existing button untouched.
+ *
+ * `url` is the canonical public track URL (the thing you would paste to a human).
+ * The widget URL is derived from it in `soundcloudEmbedSrc()` so the player
+ * parameters live in exactly one place and the stored data stays a plain link.
+ */
+export type ReleaseEmbed = { provider: "soundcloud"; url: string; visual?: boolean };
+/**
+ * `href` / `action` are OPTIONAL on purpose: a release with an `embed` plays in-page,
+ * so it has no outbound button, and the record should not describe a button that does
+ * not exist. (Before this, the fields were required and the admin editor would happily
+ * write an empty `href=""` anchor back into the live content.)
+ */
+export type Release = {
+  title: string; meta: string; body: string;
+  href?: string; action?: string;
+  embed?: ReleaseEmbed;
+};
+
+/**
+ * Accent handed to the SoundCloud widget. The widget API requires a literal hex,
+ * so this cannot be a CSS custom property: it is the VALUE of the site's --signal
+ * token (app/globals.css), not a new colour. Change one, change both.
+ */
+export const EMBED_SIGNAL_COLOR = "#f36b21";
+
+/** SoundCloud widget URL. `visual=false` is their compact (~166px) layout. */
+export function soundcloudEmbedSrc(url: string, visual?: boolean): string {
+  const params = new URLSearchParams({
+    url,
+    color: EMBED_SIGNAL_COLOR,
+    visual: visual ? "true" : "false",
+    hide_related: "true",
+    show_comments: "false",
+    show_user: "false",
+    show_reposts: "false",
+    show_teaser: "false",
+  });
+  return `https://w.soundcloud.com/player/?${params.toString()}`;
+}
+
 // ---- defaults: the content as it shipped (fallback when site.json absent) ----
 const DEFAULTS = {
   version: 1,
@@ -65,11 +111,17 @@ const DEFAULTS = {
     { number: "02", title: "I4D VOL. 2", status: "MIX REVIEW", note: "DISCO EDIT SEQUENCE" },
     { number: "03", title: "UNRELEASED EDITS", status: "PRIVATE PREVIEW", note: "WEBSITE-ONLY TEST PRESS" },
   ],
+  // Transmissions is a temporary home for RECORDED MIXES only (owner call, 2026-10-13):
+  // every row plays ON-SITE — in-page — and the list carries no outbound buttons at all.
+  // The three link entries that used to sit above it (Club Dispatch → /media, the I4D
+  // EP, the Dougie World Cup edit) are gone by design, not by accident. /media is still
+  // reachable from the world map (station 05), so nothing there is orphaned.
+  // `meta` is a hand-written string while `release-number` is rendered from list
+  // position (`0{index+1}`) — with one item the number renders 01, so meta must say 01.
   releases: [
-    { title: "Club Dispatch", meta: "01 / ONGOING", body: "The latest mix from the room.", href: "/media", action: "ENTER CLUB DISPATCH" },
-    { title: "Instructional 4 Disco vol. 2", meta: "02 / EP / 2025", body: "Disco pressure, rebuilt for the floor.", href: "https://ishd.bandcamp.com", action: "LISTEN" },
-    { title: "Dougie World Cup", meta: "03 / BOOTLEG / 2025", body: "An Ish D edit.", href: "https://ishd.bandcamp.com", action: "LISTEN" },
-  ],
+    { title: "Radio Dispatch 001 — The First Signal", meta: "01 / MIX / 2025", body: "The first broadcast in the Radio Dispatch series.",
+      embed: { provider: "soundcloud", url: "https://soundcloud.com/ish-d-1/radio-dispatch-001-praise-percussion" } },
+  ] as Release[],
 };
 
 export type SiteContent = typeof DEFAULTS;

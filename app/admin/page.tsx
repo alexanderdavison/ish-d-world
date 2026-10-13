@@ -19,7 +19,7 @@ type Content = {
   nodes: Row[];
   sets: SetRow[];
   demos: { number: string; title: string; status: string; note: string }[];
-  releases: { title: string; meta: string; body: string; href: string; action: string }[];
+  releases: { title: string; meta: string; body: string; href?: string; action?: string; embed?: { provider: string; url: string } }[];
 };
 
 async function api(url: string, options?: RequestInit) {
@@ -357,12 +357,28 @@ export default function AdminPage() {
               const releases = content.releases.map((x, idx) => (idx === i ? { ...x, body: e.target.value } : x));
               setContent({ ...content, releases }); setDirty(true);
             }} />
-            <input value={r.href} placeholder="HREF" onChange={(e) => {
+            {/* href/action are optional on the record: a release that plays in-page has
+                no outbound button. `?? ""` keeps the inputs controlled when the field is
+                absent, so the editor cannot write an empty `href=""` anchor back. */}
+            <input value={r.href ?? ""} placeholder="HREF (OPTIONAL — BLANK = NO OUTBOUND LINK)" onChange={(e) => {
               const releases = content.releases.map((x, idx) => (idx === i ? { ...x, href: e.target.value } : x));
               setContent({ ...content, releases }); setDirty(true);
             }} />
-            <input value={r.action} placeholder="ACTION LABEL" onChange={(e) => {
+            <input value={r.action ?? ""} placeholder="ACTION LABEL (OPTIONAL)" onChange={(e) => {
               const releases = content.releases.map((x, idx) => (idx === i ? { ...x, action: e.target.value } : x));
+              setContent({ ...content, releases }); setDirty(true);
+            }} />
+            {/* Blank = the item keeps its outbound button. Anything else is a
+                SoundCloud track URL and the item plays on the page instead. */}
+            <input value={r.embed?.url ?? ""} placeholder="EMBED URL (SOUNDCLOUD — BLANK = OUTBOUND BUTTON)" onChange={(e) => {
+              const url = e.target.value.trim();
+              const releases = content.releases.map((x, idx) => {
+                if (idx !== i) return x;
+                const next = { ...x };
+                if (url) next.embed = { provider: "soundcloud", url };
+                else delete next.embed;
+                return next;
+              });
               setContent({ ...content, releases }); setDirty(true);
             }} />
           </div>
