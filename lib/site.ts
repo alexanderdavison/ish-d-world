@@ -77,10 +77,12 @@ const DEFAULTS = {
     ["YOUTUBE", "https://youtube.com/@ishdofficial"],
     ["SOUNDCLOUD", "https://soundcloud.com/ishid"],
   ],
-  // Recorded sets — full DJ sets recorded by OTHER parties and published on their
-  // own channels. We embed, we never re-host: nothing is downloaded or uploaded,
-  // so the recordings stay with the channels that own them. `youtubeId` is the
-  // only thing that reaches the embed URL.
+  // Recorded sets — full DJ sets. Two kinds live here: sets recorded by OTHER
+  // parties and published on their own channels, and Ish D's own archived Club
+  // Dispatch sets, published on his own channel. Either way we embed, we never
+  // re-host: nothing is downloaded or uploaded, so the recordings stay with the
+  // channels that own them. `youtubeId` is the only thing that reaches the embed
+  // URL.
   sets: [
     {
       label: "EC104 · GOYO CLUB",
@@ -95,6 +97,13 @@ const DEFAULTS = {
       meta: "HOUSE · 59 MIN",
       credit: "Recorded live in Seoul · February 2023",
       youtubeId: "DtRxCJU1RdA",
+    },
+    {
+      label: "CLUB DISPATCH · SET 01",
+      title: "Soulful House & Disco",
+      meta: "2026 · HOUSE & DISCO · 35 MIN",
+      credit: "Recorded live · August 2026",
+      youtubeId: "2MRLejMxBIg",
     },
   ],
   // Club Dispatch nodes — one entry per musical feel. The [code, label, url]
