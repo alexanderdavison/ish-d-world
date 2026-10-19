@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 type Row = [string, string, string];
 
-type SetRow = { label: string; title: string; meta: string; credit: string; youtubeId: string };
+type SetRow = { label: string; title: string; meta: string; credit: string; youtubeId: string; guest?: boolean };
 
 type Content = {
   version: number;
@@ -96,12 +96,22 @@ function SetRows({
               × remove
             </button>
           </div>
+          <div className="admin-row">
+            <label>
+              <input
+                type="checkbox"
+                checked={row.guest === true}
+                onChange={(e) => onChange(rows.map((r, idx) => (idx === i ? { ...r, guest: e.target.checked } : r)))}
+              />{" "}
+              GUEST MIX — recorded for another room or channel
+            </label>
+          </div>
         </div>
       ))}
       <button
         type="button"
         className="admin-mini"
-        onClick={() => onChange([...rows, { label: "LABEL", title: "TITLE", meta: "", credit: "", youtubeId: "" }])}
+        onClick={() => onChange([...rows, { label: "LABEL", title: "TITLE", meta: "", credit: "", youtubeId: "", guest: false }])}
       >
         + add row
       </button>

@@ -683,6 +683,16 @@ button, input { font: inherit; }
    The frame height itself is no longer overridden here — the base .interior /
    .interior-stage rules above let every station grow (2026-10-13 generalisation). */
 .interior-media .interior-stage { grid-template-rows: auto auto; }
+/* /media OWNS its un-clip (owner decision 2026-10-19: this route scrolls, the rest
+   of the site keeps whatever the base frame does). The base rules currently say
+   the same thing, so this is a no-op today — it is here so that a future re-clamp
+   of `.interior`/`.interior-stage` cannot silently clip the set archive again
+   (4 sets + GUEST MIX overflows one screen by design). Desktop only: the mobile
+   block below already lets the stage grow. */
+@media (min-width: 901px) {
+  .interior-media { height: auto; min-height: 100svh; overflow: visible; }
+  .interior-media .interior-stage { height: auto; min-height: calc(100svh - 49px); }
+}
 /* The /news opt-out that used to live here is gone: the base .interior /
    .interior-stage rules now let EVERY station grow (2026-10-13). Two mechanisms
    doing the same job was the thing to avoid — /news computes exactly the values

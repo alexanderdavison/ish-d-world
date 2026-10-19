@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { StationPage } from "@/components/station-page";
 import { readContent } from "@/lib/site";
+import type { SetRecord } from "@/lib/site";
 
 export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
@@ -21,8 +22,48 @@ const seriesSchema = {
   creator: { "@id": "https://ishdonline.com/#artist" },
 };
 
+/**
+ * One set card. Markup and classes are unchanged from the single-list version —
+ * the only reason this is a component is that the list is now rendered twice
+ * (own sets / guest mixes) with numbering that restarts in each section.
+ */
+function SetCard({ item, index }: { item: SetRecord; index: number }) {
+  return (
+    <li className="set-card">
+      <div className="set-frame">
+        <iframe
+          src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
+          title={`${item.title} — ${item.label}`}
+          loading="lazy"
+          allow="encrypted-media; picture-in-picture; web-share"
+          referrerPolicy="strict-origin-when-cross-origin"
+          allowFullScreen
+        />
+      </div>
+      <div className="set-readout">
+        <span className="set-index">— {index + 1} —</span>
+        <span className="set-label">{item.label}</span>
+        <strong className="set-title">{item.title}</strong>
+        <span className="set-meta">{item.meta}</span>
+        <p className="set-credit">{item.credit}</p>
+        <a
+          className="set-outbound"
+          href={`https://www.youtube.com/watch?v=${item.youtubeId}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WATCH ON YOUTUBE ↗
+        </a>
+      </div>
+    </li>
+  );
+}
+
 export default function MediaPage() {
   const content = readContent();
+  // His own sets first; sets recorded for other rooms and channels are GUEST MIX.
+  const ownSets = content.sets.filter((item) => !item.guest);
+  const guestSets = content.sets.filter((item) => item.guest);
   return (
     <StationPage code="05" eyebrow="RECURRING MIX SERIES" title="Club Dispatch" kind="media">
       <script
@@ -31,41 +72,28 @@ export default function MediaPage() {
       />
       <p className="panel-meta">MIXES FROM THE ROOM</p>
       <p className="media-intro">An ongoing mix series from Ish D, moving through house, disco, gospel, and garage.</p>
-      {content.sets.length > 0 && (
+      {ownSets.length > 0 && (
         <section className="recorded-sets" aria-labelledby="recorded-sets-title">
           <header className="recorded-sets-head">
             <h2 id="recorded-sets-title">RECORDED SETS</h2>
-            <p className="recorded-sets-lead">Recorded live in the rooms that hosted them.</p>
+            <p className="recorded-sets-lead">Full sets, start to finish.</p>
           </header>
           <ol className="set-list">
-            {content.sets.map((item, i) => (
-              <li className="set-card" key={item.youtubeId}>
-                <div className="set-frame">
-                  <iframe
-                    src={`https://www.youtube-nocookie.com/embed/${item.youtubeId}`}
-                    title={`${item.title} — ${item.label}`}
-                    loading="lazy"
-                    allow="encrypted-media; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  />
-                </div>
-                <div className="set-readout">
-                  <span className="set-index">— {i + 1} —</span>
-                  <span className="set-label">{item.label}</span>
-                  <strong className="set-title">{item.title}</strong>
-                  <span className="set-meta">{item.meta}</span>
-                  <p className="set-credit">{item.credit}</p>
-                  <a
-                    className="set-outbound"
-                    href={`https://www.youtube.com/watch?v=${item.youtubeId}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    WATCH ON YOUTUBE ↗
-                  </a>
-                </div>
-              </li>
+            {ownSets.map((item, i) => (
+              <SetCard key={item.youtubeId} item={item} index={i} />
+            ))}
+          </ol>
+        </section>
+      )}
+      {guestSets.length > 0 && (
+        <section className="recorded-sets" aria-labelledby="guest-mix-title">
+          <header className="recorded-sets-head">
+            <h2 id="guest-mix-title">GUEST MIX</h2>
+            <p className="recorded-sets-lead">Sets recorded for other rooms and channels.</p>
+          </header>
+          <ol className="set-list">
+            {guestSets.map((item, i) => (
+              <SetCard key={item.youtubeId} item={item} index={i} />
             ))}
           </ol>
         </section>

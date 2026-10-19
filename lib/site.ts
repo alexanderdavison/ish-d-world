@@ -55,6 +55,17 @@ export function soundcloudEmbedSrc(url: string, visual?: boolean): string {
   return `https://w.soundcloud.com/player/?${params.toString()}`;
 }
 
+/**
+ * One recorded set. `guest` splits /media into two sections: his OWN sets
+ * (omitted/false) and sets recorded for OTHER rooms and channels (`true`).
+ * The flag lives on the record, not in two arrays, so the admin's SetRows
+ * editor can move a set between sections with one checkbox.
+ */
+export type SetRecord = {
+  label: string; title: string; meta: string; credit: string; youtubeId: string;
+  guest?: boolean;
+};
+
 // ---- defaults: the content as it shipped (fallback when site.json absent) ----
 const DEFAULTS = {
   version: 1,
@@ -85,18 +96,11 @@ const DEFAULTS = {
   // URL.
   sets: [
     {
-      label: "EC104 · GOYO CLUB",
-      title: "Electric Cleaners Mix",
-      meta: "SOULFUL HOUSE · 63 MIN",
-      credit: "Recorded live at a dry cleaner · Koreatown, Los Angeles · January 2026",
-      youtubeId: "6nF8g3K8gC4",
-    },
-    {
-      label: "SEOUL COMMUNITY RADIO",
-      title: "Essence Global Sounds",
-      meta: "HOUSE · 59 MIN",
-      credit: "Recorded live in Seoul · February 2023",
-      youtubeId: "DtRxCJU1RdA",
+      label: "FRONT OF HOUSE · VOL. 03",
+      title: "Soulful House Mix",
+      meta: "2026 · SOULFUL HOUSE · 75 MIN",
+      credit: "Recorded at home · October 2026",
+      youtubeId: "9q-yeEPH7zY",
     },
     {
       label: "CLUB DISPATCH · SET 01",
@@ -105,7 +109,23 @@ const DEFAULTS = {
       credit: "Recorded live · August 2026",
       youtubeId: "2MRLejMxBIg",
     },
-  ],
+    {
+      label: "EC104 · GOYO CLUB",
+      title: "Electric Cleaners Mix",
+      meta: "SOULFUL HOUSE · 63 MIN",
+      credit: "Recorded live at a dry cleaner · Koreatown, Los Angeles · January 2026",
+      youtubeId: "6nF8g3K8gC4",
+      guest: true,
+    },
+    {
+      label: "SEOUL COMMUNITY RADIO",
+      title: "Essence Global Sounds",
+      meta: "HOUSE · 59 MIN",
+      credit: "Recorded live in Seoul · February 2023",
+      youtubeId: "DtRxCJU1RdA",
+      guest: true,
+    },
+  ] as SetRecord[],
   // Club Dispatch nodes — one entry per musical feel. The [code, label, url]
   // shape matches `external`/`direct` so the admin's LinkRows editor handles it
   // with no extra UI, and the label slugifies into the /l/<slug> short link.
